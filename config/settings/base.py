@@ -10,7 +10,7 @@ ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 APPS_DIR = ROOT_DIR / "opentimesheet"
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(ROOT_DIR / ".env"))
@@ -61,21 +61,12 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
-    "django.forms",
 ]
 THIRD_PARTY_APPS = [
-    "crispy_forms",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
     "rest_framework",
-    "rest_framework.authtoken",
 ]
 
-LOCAL_APPS = [
-    "opentimesheet.users.apps.UsersConfig",
-    # Your stuff: custom apps go here
-]
+LOCAL_APPS = ["opentimesheet.core"]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -89,14 +80,7 @@ MIGRATION_MODULES = {"sites": "opentimesheet.contrib.sites.migrations"}
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
 ]
-# https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
-AUTH_USER_MODEL = "users.User"
-# https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "users:redirect"
-# https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = "account_login"
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
@@ -186,12 +170,6 @@ TEMPLATES = [
     }
 ]
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#form-renderer
-FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
-
-# http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = "bootstrap4"
-
 # FIXTURES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#fixture-dirs
@@ -250,21 +228,6 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["console"]},
 }
 
-
-# django-allauth
-# ------------------------------------------------------------------------------
-ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_EMAIL_REQUIRED = True
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_ADAPTER = "opentimesheet.users.adapters.AccountAdapter"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-SOCIALACCOUNT_ADAPTER = "opentimesheet.users.adapters.SocialAccountAdapter"
-
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
@@ -273,7 +236,5 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PERMISSION_CLASSES": (),
 }
-# Your stuff...
-# ------------------------------------------------------------------------------

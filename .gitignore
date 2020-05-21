@@ -151,11 +151,7 @@ typings/
 
 
 ### VisualStudioCode template
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
 
 
 
@@ -273,6 +269,9 @@ opentimesheet/media/
 
 
 .ipython/
-.env
-.envs/*
-!.envs/.local/
+.env
+
+.envs/*
+
+!.envs/.local/
+
