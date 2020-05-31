@@ -70,6 +70,7 @@ LOCAL_APPS = [
     "opentimesheet.core.apps.CoreConfig",
     "opentimesheet.org.apps.OrgConfig",
     "opentimesheet.users.apps.UsersConfig",
+    "opentimesheet.accounts.apps.AccountsConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
