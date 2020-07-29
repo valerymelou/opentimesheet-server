@@ -20,6 +20,7 @@ class Account(BaseModel):
     class Meta:
         verbose_name = _("account")
         verbose_name_plural = _("accounts")
+        ordering = ("first_name", "last_name")
 
     def get_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)

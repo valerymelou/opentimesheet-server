@@ -1,3 +1,5 @@
+import uuid as uuid_lib
+
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import UserManager as BaseUserManager
@@ -109,12 +111,15 @@ class User(AbstractUser, TimeStampedModel):
     Email and password are required. Other fields are optional.
     """
 
+    uuid = models.UUIDField(db_index=True, default=uuid_lib.uuid4, editable=False)
     org = models.ForeignKey(
         Organization,
         on_delete=models.CASCADE,
         verbose_name=_("organization"),
         null=True,
+        blank=True,
     )
 
     class Meta(AbstractUser.Meta):
+        ordering = ("email",)
         swappable = "AUTH_USER_MODEL"
