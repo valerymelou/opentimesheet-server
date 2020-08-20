@@ -261,6 +261,10 @@ Session.vim
 tags
 
 
+### Pycharm template
+.idea
+
+
 ### Project template
 
 opentimesheet/media/

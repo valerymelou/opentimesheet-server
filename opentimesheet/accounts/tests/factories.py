@@ -11,6 +11,7 @@ class AccountFactory(BaseFactory):
     user = SubFactory(UserFactory)
     first_name = Faker("first_name")
     last_name = Faker("last_name")
+    created_by = SubFactory(UserFactory)
 
     class Meta:
         model = Account
