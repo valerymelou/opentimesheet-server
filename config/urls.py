@@ -12,7 +12,7 @@ urlpatterns = [
 # API URLS
 urlpatterns += [
     # API base url
-    path("", include("opentimesheet.core.api")),
+    path("v1/", include("opentimesheet.core.urls", namespace="v1")),
 ]
 
 if settings.DEBUG:

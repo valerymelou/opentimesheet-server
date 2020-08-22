@@ -10,3 +10,8 @@ class TestAccount:
         assert account.get_name() == "{0} {1}".format(
             account.first_name, account.last_name
         )
+
+    def test__str__(self, account: Account):
+        assert account.__str__() == "{0} {1}".format(
+            account.first_name, account.last_name
+        )
