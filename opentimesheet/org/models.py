@@ -1,17 +1,29 @@
-from django.db.models import BooleanField, CharField, ImageField
-from django.utils.translation import ugettext_lazy as _
-from model_utils.models import TimeStampedModel
+import uuid
 
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
+from opentimesheet.core.models import AbstractModel
 from opentimesheet.utils.storages import upload_to
 
 
-class Organization(TimeStampedModel):
-    name = CharField(_("Name"), max_length=100, unique=True)
-    logo = ImageField(verbose_name=_("Logo"), upload_to=upload_to, blank=True)
-    is_active = BooleanField(
+class Organization(AbstractModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(_("name"), max_length=100)
+    logo = models.ImageField(verbose_name=_("logo"), upload_to=upload_to, blank=True)
+    website = models.URLField(_("website"), blank=True)
+    is_active = models.BooleanField(
         _("Active"),
         default=True,
-        help_text=_("Designates whether this organization should be treated as active"),
+        help_text=_(
+            "Designates whether this organization should be treated" " as active"
+        ),
     )
 
-    auto_create_schema = True
+    class Meta:
+        verbose_name = _("Organization")
+        verbose_name_plural = _("Organizations")
+        ordering = ("-created",)
+
+    def __str__(self):
+        return self.name

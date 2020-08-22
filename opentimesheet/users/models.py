@@ -5,8 +5,8 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from model_utils.models import TimeStampedModel
 
+from opentimesheet.core.models import AbstractModel
 from opentimesheet.org.models import Organization
 
 
@@ -101,20 +101,21 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 
-class User(AbstractUser, TimeStampedModel):
+class User(AbstractUser, AbstractModel):
     """
     Users within the Django authentication system are represented by this
     model.
 
     Email and password are required. Other fields are optional.
     """
-
     org = models.ForeignKey(
         Organization,
         on_delete=models.CASCADE,
         verbose_name=_("organization"),
         null=True,
+        blank=True,
     )
 
     class Meta(AbstractUser.Meta):
+        ordering = ("email",)
         swappable = "AUTH_USER_MODEL"

@@ -3,7 +3,6 @@
 from django.db import migrations, models
 import django.utils.timezone
 import model_utils.fields
-import opentimesheet.utils.storages
 import uuid
 
 
@@ -16,20 +15,20 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Organization',
+            name='Account',
             fields=[
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=100, verbose_name='name')),
-                ('logo', models.ImageField(blank=True, upload_to=opentimesheet.utils.storages.upload_to, verbose_name='logo')),
-                ('website', models.URLField(blank=True, verbose_name='website')),
-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this organization should be treated as active', verbose_name='Active')),
+                ('first_name', models.CharField(max_length=100, verbose_name='first name')),
+                ('last_name', models.CharField(max_length=100, verbose_name='last name')),
+                ('hire_date', models.DateField(blank=True, null=True, verbose_name='hire date')),
+                ('release_date', models.DateField(blank=True, null=True, verbose_name='release date')),
             ],
             options={
-                'verbose_name': 'Organization',
-                'verbose_name_plural': 'Organizations',
-                'ordering': ('-created',),
+                'verbose_name': 'account',
+                'verbose_name_plural': 'accounts',
+                'ordering': ('first_name', 'last_name'),
             },
         ),
     ]
