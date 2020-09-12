@@ -7,7 +7,6 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from opentimesheet.core.models import AbstractModel
-from opentimesheet.org.models import Organization
 
 
 class UserManager(BaseUserManager):
@@ -108,13 +107,6 @@ class User(AbstractUser, AbstractModel):
 
     Email and password are required. Other fields are optional.
     """
-    org = models.ForeignKey(
-        Organization,
-        on_delete=models.CASCADE,
-        verbose_name=_("organization"),
-        null=True,
-        blank=True,
-    )
 
     class Meta(AbstractUser.Meta):
         ordering = ("email",)

@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from rest_framework import serializers
 
 from opentimesheet.core.api.serializers import BaseModelSerializer
 from opentimesheet.users.api.serializers import UserSerializer
@@ -9,8 +8,6 @@ from ..models import Account
 
 class AccountSerializer(BaseModelSerializer):
     user = UserSerializer()
-    created_by = UserSerializer()
-    modified_by = UserSerializer(default=serializers.CurrentUserDefault)
     included_serializers = {"user": UserSerializer}
 
     class Meta:
@@ -45,12 +42,11 @@ class CreateAccountSerializer(BaseModelSerializer):
     def create(self, validated_data):
         request = self.context.get("request")
         current_user = request.user
-        org = current_user.org
         user_data = validated_data.pop("user")
-        user = get_user_model()(email=user_data["email"], org=org)
+        user = get_user_model()(email=user_data["email"])
         user.set_password(user_data["password"])
         user.save()
         account = Account.objects.create(
-            org=org, user=user, created_by=current_user, **validated_data
+            user=user, created_by=current_user, **validated_data
         )
         return account

@@ -1,7 +1,6 @@
 from django.urls import resolve as base_resolve
 from django.urls import reverse as base_reverse
 from rest_framework.settings import api_settings
-from rest_framework.test import APITestCase as BaseAPITestCase
 
 
 def reverse(view_name, args=None, kwargs=None):
@@ -22,7 +21,3 @@ def build_view_name(view_name, version=None):
 def build_path(path, version=None):
     version = version or api_settings.DEFAULT_VERSION
     return "/{0}{1}".format(version, path)
-
-
-class APITestCase(BaseAPITestCase):
-    pass

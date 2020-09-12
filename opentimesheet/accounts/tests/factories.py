@@ -1,4 +1,4 @@
-from factory import Faker, SubFactory, post_generation
+from factory import Faker, SubFactory
 
 from opentimesheet.core.tests.factories import BaseFactory
 from opentimesheet.users.tests.factories import UserFactory
@@ -15,8 +15,3 @@ class AccountFactory(BaseFactory):
 
     class Meta:
         model = Account
-
-    @post_generation
-    def set_user_org(self, create, extracted, **kwargs):
-        # Force the same org on user and account
-        self.user.org = self.org

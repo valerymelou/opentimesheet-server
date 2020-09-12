@@ -11,6 +11,7 @@ class AbstractModel(TimeStampedModel):
     Abstract base class for all models that are not related to an org.
     Provides created and modified fields.
     """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     class Meta:
@@ -22,6 +23,7 @@ class BaseModel(AbstractModel):
     Abstract base class for all models related to an org.
     Most models in the application will inherit from this class.
     """
+
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -34,10 +36,7 @@ class BaseModel(AbstractModel):
         related_name="+",
         verbose_name=_("modified by"),
         blank=True,
-        null=True
-    )
-    org = models.ForeignKey(
-        "org.Organization", on_delete=models.CASCADE, verbose_name=_("organization")
+        null=True,
     )
 
     class Meta:

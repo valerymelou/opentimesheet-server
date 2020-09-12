@@ -42,7 +42,9 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES["default"]["ENGINE"] = "django_tenants.postgresql_backend"
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
+DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
 
 # URLS
 # ------------------------------------------------------------------------------
@@ -53,28 +55,27 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # APPS
 # ------------------------------------------------------------------------------
-DJANGO_APPS = [
-    "django.contrib.auth",
+SHARED_APPS = [
+    "django_tenants",
+    "opentimesheet.org.apps.OrgConfig",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # "django.contrib.humanize", # Handy template tags
-    "django.contrib.admin",
-]
-THIRD_PARTY_APPS = [
     "rest_framework",
 ]
-
-LOCAL_APPS = [
+TENANT_APPS = [
+    "django.contrib.contenttypes",
+    "django.contrib.auth",
+    "django.contrib.sessions",
+    "django.contrib.sites",
+    "django.contrib.admin",
     "opentimesheet.core.apps.CoreConfig",
     "opentimesheet.org.apps.OrgConfig",
     "opentimesheet.users.apps.UsersConfig",
     "opentimesheet.accounts.apps.AccountsConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
@@ -112,6 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
+    "django_tenants.middleware.main.TenantMainMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -236,6 +238,14 @@ LOGGING = {
 
 # Auth user
 AUTH_USER_MODEL = "users.User"
+
+
+# django-tenants
+# -------------------------------------------------------------------------------
+# django-tenants - https://github.com/django-tenants/django-tenants
+TENANT_MODEL = "org.Organization"
+TENANT_DOMAIN_MODEL = "org.Domain"
+
 
 # django-rest-framework
 # -------------------------------------------------------------------------------

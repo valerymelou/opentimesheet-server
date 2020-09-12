@@ -8,7 +8,7 @@ from .models import User
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
-        (None, {"fields": ("org", "email", "password")}),
+        (None, {"fields": ("email", "password")}),
         (
             _("Permissions"),
             {
@@ -24,16 +24,10 @@ class UserAdmin(BaseUserAdmin):
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
     add_fieldsets = (
-        (
-            None,
-            {
-                "classes": ("wide",),
-                "fields": ("org", "email", "password1", "password2"),
-            },
-        ),
+        (None, {"classes": ("wide",), "fields": ("email", "password1", "password2")}),
     )
-    list_display = ("email", "org", "created", "is_staff")
-    list_filter = ("org", "is_staff", "is_superuser", "is_active", "created", "groups")
+    list_display = ("email", "created", "is_staff")
+    list_filter = ("is_staff", "is_superuser", "is_active", "created", "groups")
     search_fields = ("email",)
     ordering = ("email", "created")
     date_hierarchy = "created"

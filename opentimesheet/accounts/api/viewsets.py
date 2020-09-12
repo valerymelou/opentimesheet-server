@@ -13,9 +13,6 @@ class AccountViewSet(BaseModelViewSet):
     prefetch_for_includes = {"__all__": ["user"]}
     select_for_includes = {"__all__": ["user"]}
 
-    def get_queryset(self, *args, **kwargs):
-        return self.queryset.filter(org=self.request.user.org)
-
     def get_serializer_class(self):
         if self.action == "create":
             return CreateAccountSerializer
